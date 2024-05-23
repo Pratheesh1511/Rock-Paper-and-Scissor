@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Bar</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+  /* Basic CSS for styling the navigation bar */
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  nav {
+    background-color: #833588;
+    overflow: hidden;
+  }
+  nav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+  }
+  nav a:hover {
+    background-color: white; /* Lighter shade of purple */
+    color: #833588;
+}
+  table {
+    width: 80%; /* Adjust width as needed */
+    margin: 20px auto; /* Add margin and center the table horizontally */
+    border-collapse: collapse;
+  }
+  table img {
+    display: block;
+    margin: 0 auto;
+  }
+  table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#nextPageBtn {
+    background-color: #833588;
+    border-color: #833588;
+  }
+  #nextPageBtn:hover {
+    background-color: #caa3e8; /* Lighter shade of purple */
+    border-color: #caa3e8; /* Lighter shade of purple */
+  }
+</style>
+</head>
+<body>
+
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="ok.html">Play</a>
+        <a href="#">Results</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr >
+              <td>Paper</td>
+              <td><img src="pap.png" alt="paper png" class="img-fluid" height="20%" width="20%"></td>
+            </tr>
+            <tr>
+              <td>Scissor</td>
+              <td><img src="sis.png" alt="scissor png" class="img-fluid" height="20%" width="20%"></td>
+            </tr>
+            <tr>
+              <td>Stone</td>
+              <td><img src="sto.png" alt="stone png" class="img-fluid" height="20%" width="20%"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <th class="success"><img src="sto.png" alt="stone png" class="img-fluid" height="20%" width="20%"><br><center><b style="color:green;">Won</b></center></th>
+                <th class="danger"><img src="sis.png" alt="scissor png" class="img-fluid" height="20%" width="20%"><br><center> <b style="color:red;">Lost</b></center></th>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <th class="success"><img src="pap.png" alt="paper png" class="img-fluid" height="20%" width="20%"><br><center><b style="color:green;">Won</b></center></th>
+                <th class="danger"><img src="sto.png" alt="stone png" class="img-fluid" height="20%" width="20%"><br><center><b style="color:red;">Won</b></center></th>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <th class="success"><img src="sis.png" alt="scissor png" class="img-fluid" height="20%" width="20%"><br><center><b style="color:green;">Won</b></center></th>
+                <th class="danger"><img src="pap.png" alt="paper png" class="img-fluid" height="20%" width="20%"><br><center><b style="color:red;">Won</b></center></th>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <center><button id="nextPageBtn" class="btn btn-primary">Play</button></center>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    document.getElementById('nextPageBtn').addEventListener('click', function() {
+        window.location.href = 'ok.html';
+    });
+    </script>
+
+</body>
+</html>

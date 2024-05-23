@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #833588;
+      overflow: hidden;
+    }
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;     
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: white; /* Lighter shade of purple */
+      color: #833588;
+    }
+    #random-choice {
+      text-align: center;
+    }
+    #video-container {
+      position: absolute;
+      top: 100px;
+      left: 150px;
+    }
+    #computer-choice-img {
+      position: absolute;
+      width: 400px; 
+      height: 400px; 
+      top: 100px; 
+      right: 25px; 
+    }
+    #random-choice {
+      position: absolute;
+      top: 525px; 
+      right: 150px; 
+    }
+    #result {
+      position: absolute;
+      top: 600px; 
+      right: 50%;
+    }
+    .checkbox-container1 {
+      position: absolute;
+      top: 550px;
+      left: 150px;
+    }
+    .checkbox-container {
+      position: absolute;
+      top: 550px;
+      right: 150px;
+    }
+
+    .wrapper {
+  position: relative;
+  margin: 40px auto;
+  background: white;
+}
+
+.wrapper, .wrapper * {
+  box-sizing: border-box;
+}
+
+.wrapper {
+  width: 250px;
+  height: 250px;
+}
+.wrapper {
+        position: absolute;
+        top: 125px; /* Adjust this value as needed */
+        left: calc(50% - 125px); /* Adjust this value to center the spinner */
+    }
+.wrapper .pie {
+  width: 50%;
+  height: 100%;
+  transform-origin: 100% 50%;
+  position: absolute;
+  background: #833588;
+  border: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.wrapper .spinner {
+  border-radius: 100% 0 0 100% / 50% 0 0 50%;
+  z-index: 200;
+  border-right: none;
+  animation: rota 3s linear infinite;
+}
+
+.wrapper:hover .spinner, .wrapper:hover .filler, .wrapper:hover .mask {
+  animation-play-state: running;
+}
+
+.wrapper .filler {
+  border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+  left: 50%;
+  opacity: 0;
+  z-index: 100;
+  animation: opa 3s steps(1, end) infinite reverse;
+  border-left: none;
+}
+
+.wrapper .mask {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  background: inherit;
+  opacity: 1;
+  z-index: 300;
+  animation: opa 3s steps(1, end) infinite;
+}
+
+@keyframes rota {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes opa {
+  0% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+  </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="ok.html">Play</a>
+        <a href="#">Results</a>
+        <a href="#">Contact</a>
+    </nav>
+        <table>
+            <tbody>
+            <tr>
+            <td>
+                <div id="video-container">
+                    <video id="video" width="1000" height="300" autoplay></video>
+                </div>
+            </td>
+            <td>
+                <div class="wrapper">
+                    <div class="pie spinner"></div>
+                    <div class="pie filler"></div>
+                    <div class="mask"></div>
+                  </div>
+            </td>
+            <td>
+                <img id="computer-choice-img" src="" alt="Computer's Choice">
+                <div id="random-choice"></div>
+     
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="checkbox-container1">
+                    <label for="user-wins">User Wins: </label>
+                    <input type="checkbox" id="user-win-1">
+                    <input type="checkbox" id="user-win-2">
+                    <input type="checkbox" id="user-win-3">
+                    <input type="checkbox" id="user-win-4">
+                    <input type="checkbox" id="user-win-5">
+                </div>
+            </td>
+            
+            <td>
+                <div class="checkbox-container">
+                    <label for="computer-wins">Computer Wins: </label>
+                    <input type="checkbox" id="computer-win-1">
+                    <input type="checkbox" id="computer-win-2">
+                    <input type="checkbox" id="computer-win-3">
+                    <input type="checkbox" id="computer-win-4">
+                    <input type="checkbox" id="computer-win-5">
+                </div>
+            </td>
+        </tr>
+    </tbody>
+        </table>
+    
+      <center><div id="result"></div></center>
+      <div id="popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 5px; text-align: center;">
+          <p>Game Over!</p>
+          <button id="play-again-btn">Play Again</button>
+          <button id="exit-btn">Exit</button>
+        </div>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
+
+    <script type="text/javascript">
+        let classifier;
+        let imageModelURL = 'https://teachablemachine.withgoogle.com/models/T5q62JLGI/';
+        let video;
+        let flippedVideo;
+        let label = "";
+        let userWins = 0;
+        let computerWins = 0;
+      
+        let computerChoiceImg = document.getElementById("computer-choice-img");
+      
+        function preload() {
+          classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+        }
+      
+        function setup() {
+          createCanvas(500, 420);
+          video = createCapture(VIDEO);
+          video.size(500,400);
+          video.hide();
+          video.parent("video-container");
+          flippedVideo = ml5.flipImage(video);
+          classifyVideo();
+        }
+      
+        function draw() {
+          background(0);
+          image(flippedVideo, 0, 0); //img here
+          fill(255);
+          textSize(16);
+          textAlign(CENTER);
+          text(label, width / 2, height - 4);
+        }
+      
+        function classifyVideo() {
+          flippedVideo = ml5.flipImage(video)
+          classifier.classify(flippedVideo, gotResult);
+          flippedVideo.remove();
+        }
+      
+        function gotResult(error, results) {
+          if (error) {
+            console.error(error);
+            return;
+          }
+          label = results[0].label;
+          classifyVideo();
+        }
+      
+        function generateRandomChoice() {
+          var choices = ["rock", "paper", "sissor"];
+          return choices[Math.floor(Math.random() * choices.length)];
+        }
+      
+        function determineWinner(userChoice, computerChoice) {
+          if (userChoice === computerChoice) {
+            return "It's a tie!";
+          } else if ((userChoice === "rock" && computerChoice === "sissor") ||
+                     (userChoice === "paper" && computerChoice === "rock") ||
+                     (userChoice === "sissor" && computerChoice === "paper")) {
+            userWins++;
+            return "You win!";
+          } else {
+            computerWins++;
+            return "Computer wins!";
+          }
+        }
+      
+        function updateRandomChoiceAndResult() {
+          var computerChoice = generateRandomChoice();
+          var resultElement = document.getElementById("random-choice");
+          var resultDisplay = document.getElementById("result");
+      
+          resultElement.textContent = "Computer's choice: " + computerChoice;
+          if (computerChoice === "rock") {
+            computerChoiceImg.src = "sto.png";
+          } else if (computerChoice === "paper") {
+            computerChoiceImg.src = "pap.png";
+          } else if (computerChoice === "sissor") {
+            computerChoiceImg.src = "sis.png";
+          }
+      
+          var result = determineWinner(label, computerChoice);
+      
+          resultDisplay.textContent = result;
+          console.log("winner", result);
+      
+          // Update checkbox status
+          updateCheckbox('user', userWins);
+          updateCheckbox('computer', computerWins);
+          if (userWins === 5 || computerWins === 5) {
+    // Display the popup box
+    document.getElementById("popup").style.display = "block";
+  }
+        }
+      
+        // Function to update checkbox status based on wins
+        function updateCheckbox(player, winCount) {
+          for (let i = 1; i <= 5; i++) {
+            const checkbox = document.getElementById(`${player}-win-${i}`);
+            checkbox.disabled = true; // Disable the checkbox
+            checkbox.checked = i <= winCount; // Check the checkbox if win count is greater than or equal to its index
+            
+          }
+        }
+        
+        updateRandomChoiceAndResult();
+        setInterval(updateRandomChoiceAndResult, 3000); 
+function playAgain() {
+  window.location.href = "ok.html";
+}
+
+function exit() {
+  window.location.href = "home.html";
+}
+document.getElementById("play-again-btn").addEventListener("click", playAgain);
+document.getElementById("exit-btn").addEventListener("click", exit);
+
+        
+      </script>
+
+  
+</body>
+</html>
